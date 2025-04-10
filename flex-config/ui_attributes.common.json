@@ -1,4 +1,9 @@
 {
+  "sdkOptions": {
+    "voice": {
+      "allowIncomingWhileBusy": true
+    }
+  },
   "custom_data": {
     "serverless_functions_domain": "<YOUR_SERVERLESS_DOMAIN>",
     "common": {
@@ -68,6 +73,9 @@
         "cold_transfer": true,
         "multi_participant": true
       },
+      "post_call_survey":{
+        "enabled": true
+      },
       "chat_to_video_escalation": {
         "enabled": false
       },
@@ -84,12 +92,10 @@
         "url_tab_title": "Web Page"
       },
       "internal_call": {
-        "enabled": true,
-        "enable_call_agent": true,
-        "enable_call_queue": true
+        "enabled": true
       },
       "scrollable_activities": {
-        "enabled": false
+        "enabled": true
       },
       "supervisor_barge_coach": {
         "enabled": true,
@@ -109,9 +115,7 @@
       },
       "dual_channel_recording": {
         "enabled": false,
-        "channel": "worker",
-        "exclude_attributes": [],
-        "exclude_queues": []
+        "channel": "worker"
       },
       "pause_recording": {
         "enabled": true,
@@ -205,11 +209,9 @@
       },
       "custom_transfer_directory": {
         "enabled": true,
-        "max_items": 200,
         "worker": {
           "enabled": true,
-          "show_only_available_workers": false,
-          "max_taskrouter_workers": 15000
+          "show_only_available_workers": false
         },
         "queue": {
           "enabled": true,
@@ -221,7 +223,15 @@
         },
         "external_directory": {
           "enabled": true,
-          "skipPhoneNumberValidation": false
+          "skipPhoneNumberValidation": false,
+          "directory": [
+            {
+              "cold_transfer_enabled": true,
+              "warm_transfer_enabled": true,
+              "label": "Sample Entry",
+              "number": "+10000000000"
+            }
+          ]
         }
       },
       "dispositions": {
@@ -275,7 +285,7 @@
         "highlight_handle_time": true,
         "handle_time_warning_threshold": 180,
         "handle_time_exceeded_threshold": 300,
-        "display_task_queue_name": false,
+        "display_task_queue_name": true,
         "columns": {
           "calls": true,
           "other_tasks": true,
@@ -295,17 +305,18 @@
       "metrics_data_tiles": {
         "enabled": false,
         "queues_view_tiles": {
-          "all_channels_data_tile": true,
-          "all_channels_sla_data_tile": false,
+          "active_tasks_data_tile": false,
+          "waiting_tasks_data_tile": false,
+          "longest_wait_time_data_tile": false,
           "agents_by_activity_bar_chart": true,
+          "all_channels_data_tile": false,
           "enhanced_agent_by_activity_pie_chart": false
         },
         "teams_view_tiles": {
           "task_summary_tile": false,
           "team_activity_tile": false,
           "status_idle_color": "limegreen",
-          "status_busy_color": "royalblue",
-          "status_idle_name": "Available"
+          "status_busy_color": "royalblue"
         },
         "channels": {
           "Voice": {
@@ -417,15 +428,6 @@
           "side_nav_hover_background": "rgb(225, 227, 234)"
         },
         "component_theme_overrides": {}
-      },
-      "force_conference_region": {
-        "enabled": false,
-        "region": ""
-      },
-      "conditional_recording": {
-        "enabled": false,
-        "exclude_attributes": [],
-        "exclude_queues": []
       }
     }
   }
