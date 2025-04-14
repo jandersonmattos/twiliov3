@@ -35,6 +35,7 @@ exports.handler = async (context, event, callback) => {
 
   if (result.success) {
     console.log('Twilio Fetch Survey from sync API response:', result.data);
+    console.log(JSON.stringify(result.data));
   }
 
   const mapItem = result.data;
@@ -44,6 +45,7 @@ exports.handler = async (context, event, callback) => {
   console.log('survey:', survey);
 
   if (questionIndex === 0) {
+    console.log('entrou aqui');
     twiml.say(survey.message_intro);
 
     const conversations = {
@@ -74,6 +76,7 @@ exports.handler = async (context, event, callback) => {
     console.log(`Survey task SID: ${surveyTaskSid}`);
     attributes = taskResult.data.attributes;
   } else {
+    console.log('entrou aqui2');
     attributes.conversations[`conversation_label_${questionIndex}`] = survey.questions[questionIndex - 1].label;
     attributes.conversations[`conversation_attribute_${questionIndex}`] = digits;
 
@@ -84,7 +87,7 @@ exports.handler = async (context, event, callback) => {
     });
     attributes = updateTaskResult.data.attributes || attributes;
   }
-
+  console.log('entrou aqui3');
   if (questionIndex === survey.questions.length) {
     attributes.conversations.abandoned = 'No';
     console.log('taskSid', taskSid);
