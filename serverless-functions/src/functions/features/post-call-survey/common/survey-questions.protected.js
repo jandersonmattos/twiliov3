@@ -28,7 +28,7 @@ exports.handler = async (context, event, callback) => {
         .fetch();
     } catch (error) {
       console.log(error);
-      twiml.say("I'm sorry an error occurred in the post call survey. Goodbye.");
+      twiml.say("I'm sorry an error occurred in the post call survey. Goodbye. ");
       // Re-throw the error for the retry handler to catch
       return callback(null, twiml);
     }
