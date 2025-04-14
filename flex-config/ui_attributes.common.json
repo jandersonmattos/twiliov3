@@ -5,7 +5,7 @@
     }
   },
   "custom_data": {
-    "serverless_functions_domain": "<YOUR_SERVERLESS_DOMAIN>",
+    "serverless_functions_domain": "custom-flex-extensions-serverless-1031",
     "common": {
       "log_level": "info",
       "audit_log_ttl": 1209600,
