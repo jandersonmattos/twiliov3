@@ -28,7 +28,7 @@ exports.handler = async (context, event, callback) => {
         .fetch();
     } catch (error) {
       console.log(error);
-      twiml.say("I'm sorry an error occurred in the post call survey. Goodbye. ");
+      twiml.say({language: 'pt-BR'},"I'm sorry an error occurred in the post call survey. Goodbye. ");
       // Re-throw the error for the retry handler to catch
       return callback(null, twiml);
     }
@@ -47,7 +47,7 @@ exports.handler = async (context, event, callback) => {
 
   if (questionIndex === 0) {
     console.log('entrou aqui');
-    twiml.say(survey.message_intro);
+    twiml.say({language: 'pt-BR'}, survey.message_intro);
 
     const conversations = {
       conversation_id: taskSid,
@@ -105,10 +105,10 @@ exports.handler = async (context, event, callback) => {
 
     attributes = updateTaskResult.data.attributes || attributes;
 
-    twiml.say(survey.message_end);
+    twiml.say({language: 'pt-BR'}, survey.message_end);
   } else {
     const question = survey.questions[parseInt(questionIndex, 10)];
-    twiml.say(question.prompt);
+    twiml.say({language: 'pt-BR'}, question.prompt);
     const nextQuestion = questionIndex + 1;
 
     const nextUrl = `https://${
@@ -124,6 +124,7 @@ exports.handler = async (context, event, callback) => {
       numDigits: 1,
       method: 'POST',
       action: nextUrl,
+      language: 'pt-BR',
     });
   }
 
