@@ -9,6 +9,9 @@ exports.handler = async (context, event, callback) => {
   const { queueName, callSid, taskSid, surveyKey, Digits } = event;
   let { questionIndex, surveyTaskSid, attributes } = event;
 
+  console.log(`questionIndex: ${questionIndex}`);
+  console.log(`surveyTaskSid: ${surveyTaskSid}`);
+
   questionIndex = parseInt(questionIndex, 10);
   const digits = parseInt(Digits, 10);
   console.log(`attributes: ${attributes}`);
