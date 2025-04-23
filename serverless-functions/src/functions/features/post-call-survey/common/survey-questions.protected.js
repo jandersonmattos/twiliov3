@@ -47,7 +47,7 @@ exports.handler = async (context, event, callback) => {
 
   if (questionIndex === 0) {
     console.log('entrou aqui');
-    twiml.say({language: 'pt-BR'}, survey.message_intro);
+    twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, survey.message_intro);
 
     const conversations = {
       conversation_id: taskSid,
@@ -105,10 +105,10 @@ exports.handler = async (context, event, callback) => {
 
     attributes = updateTaskResult.data.attributes || attributes;
 
-    twiml.say({language: 'pt-BR'}, survey.message_end);
+    twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, survey.message_end);
   } else {
     const question = survey.questions[parseInt(questionIndex, 10)];
-    twiml.say({language: 'pt-BR'}, question.prompt);
+    twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, question.prompt);
     const nextQuestion = questionIndex + 1;
 
     const nextUrl = `https://${
