@@ -1,5 +1,6 @@
 const TaskOperations = require(Runtime.getFunctions()['common/twilio-wrappers/taskrouter'].path);
 const { twilioExecute } = require(Runtime.getFunctions()['common/helpers/function-helper'].path);
+const jsforce = require('jsforce');
 
 exports.handler = async (context, event, callback) => {
   console.log('PCS >> Incoming >>', event);
@@ -104,6 +105,39 @@ exports.handler = async (context, event, callback) => {
     });
 
     attributes = updateTaskResult.data.attributes || attributes;
+
+    const { SALESFORCE_URL, SALESFORCE_USER_TWILIO, SALESFORCE_PASSWORD_TWILIO } = context;
+    const credentials = {
+      url: SALESFORCE_URL,
+      user: SALESFORCE_USER_TWILIO,
+      password: SALESFORCE_PASSWORD_TWILIO,
+    };
+
+    let body = {};
+
+    body = {
+      taskSID: surveyTaskSid,
+      callSID: callSid
+    };
+
+    console.log('credentials ' + credentials);
+
+    const conn = new jsforce.Connection({
+      loginUrl: credentials.url,
+    });
+    await conn.login(credentials.user, credentials.password);
+    try {
+      response = await conn.apex.post('/survey-call/', body, function (err, res) {
+        if (err) {
+          console.error(err);
+        }
+        console.log('response: ', res);
+      });
+    } catch (err) {
+      console.log('erro aqui');
+      console.log(err);
+    }
+
 
     twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, survey.message_end);
   } else {
