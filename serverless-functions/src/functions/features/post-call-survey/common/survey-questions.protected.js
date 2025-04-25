@@ -19,6 +19,8 @@ exports.handler = async (context, event, callback) => {
   attributes = attributes ? JSON.parse(attributes) : { conversations: {} };
   console.log('attributes 2:', attributes);
 
+  let responses = [];
+
   // UPDATE: Rethink serverless wrappers #492
   const result = await twilioExecute(context, async (client) => {
     try {
@@ -82,6 +84,9 @@ exports.handler = async (context, event, callback) => {
     attributes.conversations[`conversation_label_${questionIndex}`] = survey.questions[questionIndex - 1].label;
     attributes.conversations[`conversation_attribute_${questionIndex}`] = digits;
 
+    let question = {order : questionIndex, response: digits}
+    responses.push(question);
+
     const updateTaskResult = await TaskOperations.updateTask({
       taskSid: surveyTaskSid,
       updateParams: { attributes: JSON.stringify(attributes) },
@@ -116,10 +121,12 @@ exports.handler = async (context, event, callback) => {
     let body = {};
 
     body = {
-      taskSID: surveyTaskSid,
-      callSID: callSid
+      taskSID: taskSid,
+      callSID: callSid,
+      questions: responses
     };
 
+    console.log(body);
     console.log('credentials ' + credentials);
 
     const conn = new jsforce.Connection({
