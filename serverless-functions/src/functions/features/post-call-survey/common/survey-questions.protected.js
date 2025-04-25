@@ -8,7 +8,7 @@ exports.handler = async (context, event, callback) => {
   const twiml = new Twilio.twiml.VoiceResponse();
 
   const { queueName, callSid, taskSid, surveyKey, Digits } = event;
-  let { questionIndex, surveyTaskSid, attributes } = event;
+  let { questionIndex, surveyTaskSid, attributes, responses } = event;
 
   console.log(`questionIndex: ${questionIndex}`);
   console.log(`surveyTaskSid: ${surveyTaskSid}`);
@@ -19,7 +19,7 @@ exports.handler = async (context, event, callback) => {
   attributes = attributes ? JSON.parse(attributes) : { conversations: {} };
   console.log('attributes 2:', attributes);
 
-  let responses = [];
+  responses = responses ? JSON.parse(responses) : [];
 
   // UPDATE: Rethink serverless wrappers #492
   const result = await twilioExecute(context, async (client) => {
@@ -156,6 +156,8 @@ exports.handler = async (context, event, callback) => {
       context.DOMAIN_NAME
     }/features/post-call-survey/common/survey-questions?callSid=${callSid}&taskSid=${taskSid}&surveyKey=${surveyKey}&queueName=${queueName}&surveyTaskSid=${surveyTaskSid}&questionIndex=${nextQuestion}&attributes=${encodeURIComponent(
       JSON.stringify(attributes),
+    )}&responses=${encodeURIComponent(
+      JSON.stringify(responses),
     )}`;
 
     console.log(`Next URL: ${nextUrl}`);
