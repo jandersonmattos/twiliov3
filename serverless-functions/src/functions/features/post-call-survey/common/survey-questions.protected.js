@@ -44,7 +44,7 @@ exports.handler = async (context, event, callback) => {
   const survey = mapItem.data;
 
   if (questionIndex === 0) {
-    twiml.say({voice: 'Polly.Camila-Neural', language: 'pt-BR'}, survey.message_intro);
+    twiml.say({voice: 'Polly.Vitoria-Neural', language: 'pt-BR'}, survey.message_intro);
 
     const conversations = {
       conversation_id: taskSid,
@@ -133,10 +133,10 @@ exports.handler = async (context, event, callback) => {
       console.log(err);
     }
 
-    twiml.say({voice: 'Polly.Camila-Neural', language: 'pt-BR'}, survey.message_end);
+    twiml.say({voice: 'Polly.Vitoria-Neural', language: 'pt-BR'}, survey.message_end);
   } else {
     const question = survey.questions[parseInt(questionIndex, 10)];
-    twiml.say({voice: 'Polly.Camila-Neural', language: 'pt-BR'}, question.prompt);
+    twiml.say({voice: 'Polly.Vitoria-Neural', language: 'pt-BR'}, question.prompt);
     const nextQuestion = questionIndex + 1;
 
     const nextUrl = `https://${
