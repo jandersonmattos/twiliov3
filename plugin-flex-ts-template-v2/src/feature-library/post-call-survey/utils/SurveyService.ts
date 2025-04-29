@@ -37,15 +37,15 @@ class SurveyService extends ApiService {
 
       console.log('startSurvey');
       console.log(encodedParams);
-      let teste = this.buildBody(encodedParams);
-      console.log(teste);
+      let body = this.buildBody(encodedParams);
+      console.log(body);
       this.fetchJsonWithReject<any>(
         // `https://6e6d12fab128.ngrok.app/features/post-call-survey/flex/start-voice-survey`,
         `${this.serverlessProtocol}://${this.serverlessDomain}/features/post-call-survey/flex/start-voice-survey`,
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: teste,
+          body: body,
         },
       )
         .then((resp: any) => {

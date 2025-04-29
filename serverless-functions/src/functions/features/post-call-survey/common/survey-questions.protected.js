@@ -15,9 +15,7 @@ exports.handler = async (context, event, callback) => {
 
   questionIndex = parseInt(questionIndex, 10);
   const digits = parseInt(Digits, 10);
-  console.log(`attributes: ${attributes}`);
   attributes = attributes ? JSON.parse(attributes) : { conversations: {} };
-  console.log('attributes 2:', attributes);
 
   responses = responses ? JSON.parse(responses) : [];
 
@@ -31,7 +29,7 @@ exports.handler = async (context, event, callback) => {
         .fetch();
     } catch (error) {
       console.log(error);
-      twiml.say({language: 'pt-BR'},"I'm sorry an error occurred in the post call survey. Goodbye. ");
+      twiml.say({language: 'pt-BR'},"Obrigado pela sua ligação. ");
       // Re-throw the error for the retry handler to catch
       return callback(null, twiml);
     }
@@ -43,14 +41,10 @@ exports.handler = async (context, event, callback) => {
   }
 
   const mapItem = result.data;
-  console.log('mapItem: ', mapItem);
-
   const survey = mapItem.data;
-  console.log('survey:', survey);
 
   if (questionIndex === 0) {
-    console.log('entrou aqui');
-    twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, survey.message_intro);
+    twiml.say({voice: 'Polly.Camila-Neural', language: 'pt-BR'}, survey.message_intro);
 
     const conversations = {
       conversation_id: taskSid,
@@ -75,12 +69,9 @@ exports.handler = async (context, event, callback) => {
       timeout: 300,
     });
 
-    console.log('create taskResult', taskResult);
     surveyTaskSid = taskResult.data.sid;
-    console.log(`Survey task SID: ${surveyTaskSid}`);
     attributes = taskResult.data.attributes;
   } else {
-    console.log('entrou aqui2');
     attributes.conversations[`conversation_label_${questionIndex}`] = survey.questions[questionIndex - 1].label;
     attributes.conversations[`conversation_attribute_${questionIndex}`] = digits;
 
@@ -94,10 +85,9 @@ exports.handler = async (context, event, callback) => {
     });
     attributes = updateTaskResult.data.attributes || attributes;
   }
-  console.log('entrou aqui3');
+
   if (questionIndex === survey.questions.length) {
     attributes.conversations.abandoned = 'No';
-    console.log('taskSid', taskSid);
 
     const updateTaskResult = await TaskOperations.updateTask({
       taskSid: surveyTaskSid,
@@ -127,7 +117,6 @@ exports.handler = async (context, event, callback) => {
     };
 
     console.log(body);
-    console.log('credentials ' + credentials);
 
     const conn = new jsforce.Connection({
       loginUrl: credentials.url,
@@ -141,15 +130,13 @@ exports.handler = async (context, event, callback) => {
         console.log('response: ', res);
       });
     } catch (err) {
-      console.log('erro aqui');
       console.log(err);
     }
 
-
-    twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, survey.message_end);
+    twiml.say({voice: 'Polly.Camila-Neural', language: 'pt-BR'}, survey.message_end);
   } else {
     const question = survey.questions[parseInt(questionIndex, 10)];
-    twiml.say({voice: 'Polly.Vitoria', language: 'pt-BR'}, question.prompt);
+    twiml.say({voice: 'Polly.Camila-Neural', language: 'pt-BR'}, question.prompt);
     const nextQuestion = questionIndex + 1;
 
     const nextUrl = `https://${
